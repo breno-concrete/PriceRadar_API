@@ -1,6 +1,9 @@
 package com.breno.PriceRadar_API.services.impl;
 
 import com.breno.PriceRadar_API.DTOs.SnapshotHistoryResponseDTO;
+import com.breno.PriceRadar_API.DTOs.SnapshotRequestDTO;
+import com.breno.PriceRadar_API.exceptions.EntityNotFoundException;
+import com.breno.PriceRadar_API.exceptions.InvalidPriceException;
 import com.breno.PriceRadar_API.mappers.SnapshotMapper;
 import com.breno.PriceRadar_API.models.PriceSnapshot;
 import com.breno.PriceRadar_API.models.TrackedItem;
@@ -24,7 +27,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     @Transactional
-    public SnapshotHistoryResponseDTO createSnapshot(Long itemId, SnapshotHistoryResponseDTO request) {
+    public SnapshotHistoryResponseDTO createSnapshot(Long itemId, SnapshotRequestDTO request) {
         TrackedItem item = findTrackedItemById(itemId);
 
         PriceSnapshot snapshot = new PriceSnapshot();
@@ -33,6 +36,11 @@ public class SnapshotServiceImpl implements SnapshotService {
         snapshot.setTimestamp(LocalDateTime.now());
 
         snapshot = snapshotRepository.save(snapshot);
+
+        if(item.getTargetPrice().compareTo(snapshot.getCurrentPrice()) > 0){
+
+
+        }
 
         return snapshotMapper.toDTO(snapshot);
     }
@@ -63,14 +71,14 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     private TrackedItem findTrackedItemById(Long itemId) {
         return itemRepository.findById(itemId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "Item com id " + itemId + " não existe."
                 ));
     }
 
     private PriceSnapshot findSnapshotById(Long snapshotId) {
         return snapshotRepository.findById(snapshotId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "Snapshot com id " + snapshotId + " não existe."
                 ));
     }
