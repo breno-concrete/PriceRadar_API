@@ -19,7 +19,7 @@ public class PriceAlert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "item_id")
     private TrackedItem item;
 
