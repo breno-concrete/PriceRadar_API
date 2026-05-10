@@ -4,6 +4,8 @@ import com.breno.PriceRadar_API.DTOs.ItemResponseDTO;
 import com.breno.PriceRadar_API.DTOs.PriceSnapshotResponseDTO;
 import com.breno.PriceRadar_API.DTOs.SnapshotHistoryResponseDTO;
 import com.breno.PriceRadar_API.DTOs.TrackedItemRequestDTO;
+import com.breno.PriceRadar_API.exceptions.DuplicateItemException;
+import com.breno.PriceRadar_API.exceptions.EntityNotFoundException;
 import com.breno.PriceRadar_API.mappers.ItemMapper;
 import com.breno.PriceRadar_API.models.TrackedItem;
 import com.breno.PriceRadar_API.repositories.ItemRepository;
@@ -29,8 +31,7 @@ public class ItemServiceImpl implements TrackedItemService {
     @Transactional
     public ItemResponseDTO createTrackedItem(TrackedItemRequestDTO request) {
         if (itemRepository.existsByUrl(request.url())) {
-
-            throw new IllegalArgumentException("Um item com esta URL já existe.");
+            throw new DuplicateItemException("Um item com esta URL já existe.");
         }
 
         TrackedItem item = new TrackedItem();
@@ -49,10 +50,8 @@ public class ItemServiceImpl implements TrackedItemService {
     @Override
     @Transactional
     public void deleteItem(Long id) {
-
         TrackedItem item = itemRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Item com id " + id + " não existe."));
-
+                .orElseThrow(() -> new EntityNotFoundException("Item com id " + id + " não existe."));
 
         itemRepository.delete(item);
     }
@@ -63,7 +62,7 @@ public class ItemServiceImpl implements TrackedItemService {
     @Transactional
     public ItemResponseDTO updateTrackedItem(Long id, BigDecimal newTargetPrice){
         TrackedItem item = itemRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Item com id " + id + " não existe."));
+                .orElseThrow(() -> new EntityNotFoundException("Item com id " + id + " não existe."));
 
         item.setTargetPrice(newTargetPrice);
         item = itemRepository.save(item);
@@ -75,7 +74,7 @@ public class ItemServiceImpl implements TrackedItemService {
     @Transactional
     public ItemResponseDTO getTrackedItemById(Long id) {
         TrackedItem item = itemRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Item com id " + id + " não existe."));
+                .orElseThrow(() -> new EntityNotFoundException("Item com id " + id + " não existe."));
 
         return itemMapper.toDTO(item);
     }
@@ -94,7 +93,7 @@ public class ItemServiceImpl implements TrackedItemService {
     @Transactional
     public List<PriceSnapshotResponseDTO> getPriceHistoryForItem(Long id) {
         TrackedItem item = itemRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Item com id " + id + " não existe."));
+                .orElseThrow(() -> new EntityNotFoundException("Item com id " + id + " não existe."));
 
         return item.getPriceSnapshots().stream()
                 .map(snapshot -> new PriceSnapshotResponseDTO(
