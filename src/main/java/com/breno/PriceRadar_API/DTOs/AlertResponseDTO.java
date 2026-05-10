@@ -6,5 +6,6 @@ import java.time.LocalDateTime;
 public record AlertResponseDTO(
         Long id,
         BigDecimal triggeredPrice,
-        LocalDateTime triggeredAt
+        LocalDateTime triggeredAt,
+        boolean isRead
 ) {}

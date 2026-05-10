@@ -13,4 +13,6 @@ public interface AlertService {
     AlertResponseDTO getAlertById(Long alertId);
 
     void deleteAlert(Long alertId);
+
+    void markAsRead(Long alertId);
 }

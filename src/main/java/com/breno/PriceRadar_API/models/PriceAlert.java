@@ -28,4 +28,7 @@ public class PriceAlert {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime timestamp = LocalDateTime.now();
+
+    @Column(nullable = false)
+    private boolean isRead = false;
 }

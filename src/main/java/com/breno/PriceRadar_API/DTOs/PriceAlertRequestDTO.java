@@ -1,4 +1,8 @@
 package com.breno.PriceRadar_API.DTOs;
 
-public record PriceAlertRequestDTO() {
+import java.math.BigDecimal;
+
+public record PriceAlertRequestDTO(
+        BigDecimal triggeredPrice
+) {
 }

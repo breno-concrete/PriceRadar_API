@@ -1,6 +1,8 @@
 package com.breno.PriceRadar_API.services.impl;
 
 import com.breno.PriceRadar_API.DTOs.AlertResponseDTO;
+import com.breno.PriceRadar_API.exceptions.EntityNotFoundException;
+import com.breno.PriceRadar_API.exceptions.InvalidPriceException;
 import com.breno.PriceRadar_API.mappers.AlertMapper;
 import com.breno.PriceRadar_API.models.PriceAlert;
 import com.breno.PriceRadar_API.models.TrackedItem;
@@ -65,22 +67,32 @@ public class AlertServiceImpl implements AlertService {
 
     private TrackedItem findTrackedItemById(Long itemId) {
         return itemRepository.findById(itemId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "Item com id " + itemId + " não existe."
                 ));
     }
 
     private PriceAlert findAlertById(Long alertId) {
         return alertRepository.findById(alertId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "Alerta com id " + alertId + " não existe."
                 ));
     }
 
     private void validatePriceNotNull(BigDecimal price) {
         if (price == null) {
-            throw new IllegalArgumentException("O preço é obrigatório.");
+            throw new InvalidPriceException("O preço é obrigatório.");
         }
     }
+
+    @Override
+    @Transactional
+    public void markAsRead(Long alertId) {
+        PriceAlert alert = findAlertById(alertId);
+        alert.setRead(true);
+        alertRepository.save(alert);
+    }
+
+
 }
 
