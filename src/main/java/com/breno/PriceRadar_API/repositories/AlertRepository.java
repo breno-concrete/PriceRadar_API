@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface AlertRepository extends JpaRepository<PriceAlert, Long> {
 
-    List<PriceAlert> findByItemOrderByTriggeredAtDesc(TrackedItem item);
+    List<PriceAlert> findByItemOrderByTimestampDesc(TrackedItem item);
 }

@@ -46,7 +46,7 @@ public class AlertServiceImpl implements AlertService {
     public List<AlertResponseDTO> getAlertsByItem(Long itemId) {
         TrackedItem item = findTrackedItemById(itemId);
 
-        return alertRepository.findByItemOrderByTriggeredAtDesc(item).stream()
+        return alertRepository.findByItemOrderByTimestampDesc(item).stream()
                 .map(alertMapper::toDTO)
                 .toList();
     }

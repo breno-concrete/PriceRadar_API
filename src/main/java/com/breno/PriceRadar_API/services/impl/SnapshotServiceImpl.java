@@ -50,7 +50,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     public List<SnapshotHistoryResponseDTO> getSnapshotsByItem(Long itemId) {
         TrackedItem item = findTrackedItemById(itemId);
 
-        return snapshotRepository.findByItemOrderByTimeStamp(item).stream()
+        return snapshotRepository.findByItemOrderByTimestamp(item).stream()
                 .map(snapshotMapper::toDTO)
                 .toList();
     }

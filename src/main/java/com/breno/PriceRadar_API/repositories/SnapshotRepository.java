@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface SnapshotRepository extends JpaRepository<PriceSnapshot, Long> {
 
-    List<PriceSnapshot> findByItemOrderByTimeStamp(TrackedItem item);
+    List<PriceSnapshot> findByItemOrderByTimestamp(TrackedItem item);
 }
