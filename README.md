@@ -46,17 +46,12 @@ Permite monitorar produtos, registrar variações de preço e disparar alertas a
 - [Sobre](#-sobre)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
-- [Pré-requisitos](#-pré-requisitos)
-- [Instalação](#-instalação)
-- [Configuração](#-configuração)
 - [Uso & Exemplos](#-uso--exemplos)
 - [Model de Dados](#-model-de-dados-e-relacionamentos)
 - [API Endpoints](#-api-endpoints)
 - [Deploy](#-deploy)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Testes](#-testes)
-- [Contribuindo](#-contribuindo)
-| [Licença](#-licença)
+- [Licença](#-licença)
 
 ---
 
