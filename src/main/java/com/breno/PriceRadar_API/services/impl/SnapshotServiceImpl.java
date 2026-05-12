@@ -3,12 +3,12 @@ package com.breno.PriceRadar_API.services.impl;
 import com.breno.PriceRadar_API.DTOs.SnapshotHistoryResponseDTO;
 import com.breno.PriceRadar_API.DTOs.SnapshotRequestDTO;
 import com.breno.PriceRadar_API.exceptions.EntityNotFoundException;
-import com.breno.PriceRadar_API.exceptions.InvalidPriceException;
 import com.breno.PriceRadar_API.mappers.SnapshotMapper;
 import com.breno.PriceRadar_API.models.PriceSnapshot;
 import com.breno.PriceRadar_API.models.TrackedItem;
 import com.breno.PriceRadar_API.repositories.ItemRepository;
 import com.breno.PriceRadar_API.repositories.SnapshotRepository;
+import com.breno.PriceRadar_API.services.AlertService;
 import com.breno.PriceRadar_API.services.SnapshotService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     private final SnapshotRepository snapshotRepository;
     private final ItemRepository itemRepository;
     private final SnapshotMapper snapshotMapper;
+    private final AlertService alertService;
 
     @Override
     @Transactional
@@ -37,9 +38,10 @@ public class SnapshotServiceImpl implements SnapshotService {
 
         snapshot = snapshotRepository.save(snapshot);
 
-        if(item.getTargetPrice().compareTo(snapshot.getCurrentPrice()) > 0){
-
-
+        // Cria alerta automaticamente se o preço atual for menor que o targetPrice
+        if (item.getTargetPrice().compareTo(snapshot.getCurrentPrice()) >= 0) {
+            // Retorno não é necessário pois é criação automática
+            alertService.createAlert(itemId, snapshot.getCurrentPrice());
         }
 
         return snapshotMapper.toDTO(snapshot);
