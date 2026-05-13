@@ -110,8 +110,8 @@ public class AlertController {
             @PathVariable Long itemId,
             @Parameter(description = "ID do alerta", example = "1", required = true)
             @PathVariable Long alertId) {
-        alertService.markAsRead(alertId);
-        AlertResponseDTO alert = alertService.getAlertById(alertId);
+        AlertResponseDTO alert = alertService.markAsRead(alertId);
+        
         return ResponseEntity.ok(alert);
     }
 }

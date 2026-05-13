@@ -14,5 +14,6 @@ public interface AlertService {
 
     void deleteAlert(Long alertId);
 
-    void markAsRead(Long alertId);
+    // Troque o retorno de void para AlertResponseDTO
+    AlertResponseDTO markAsRead(Long alertId);
 }

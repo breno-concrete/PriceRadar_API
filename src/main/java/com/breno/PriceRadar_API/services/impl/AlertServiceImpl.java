@@ -87,10 +87,15 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     @Transactional
-    public void markAsRead(Long alertId) {
+    public AlertResponseDTO markAsRead(Long alertId) {
         PriceAlert alert = findAlertById(alertId);
+
         alert.setRead(true);
-        alertRepository.save(alert);
+
+        // O Hibernate salva a alteração e você já devolve o objeto mapeado
+        alert = alertRepository.save(alert);
+
+        return alertMapper.toDTO(alert);
     }
 
 

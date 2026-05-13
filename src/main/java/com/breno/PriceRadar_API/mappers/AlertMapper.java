@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface AlertMapper {
 
     @Mapping(source = "timestamp", target = "triggeredAt")
+    @Mapping(source = "read", target = "isRead") // Liga o 'read' da entidade ao 'isRead' do DTO
     AlertResponseDTO toDTO(PriceAlert alert);
-}
 
+}
